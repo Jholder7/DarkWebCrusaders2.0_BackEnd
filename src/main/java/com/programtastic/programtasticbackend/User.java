@@ -1,10 +1,15 @@
 package com.programtastic.programtasticbackend;
 
+import jakarta.persistence.*;
 import java.time.LocalDate;
 
+@Entity
+@Table
 public class User {
-    // properties
-    private long userID;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long userID;
+    @Column(nullable = false)
     private String userName,
             fName,
             lName,
@@ -12,6 +17,9 @@ public class User {
             passwordHash,
             countryLastSignIn;
     private LocalDate dateAccountCreated, dateLastSignIn;
+
+    public User() {
+    }
 
     public User(String userName,
                 String fName,
@@ -29,9 +37,6 @@ public class User {
         this.countryLastSignIn = countryLastSignIn;
         this.dateAccountCreated = dateAccountCreated;
         this.dateLastSignIn = dateLastSignIn;
-    }
-
-    public User() {
     }
 
     public User(long userID,
