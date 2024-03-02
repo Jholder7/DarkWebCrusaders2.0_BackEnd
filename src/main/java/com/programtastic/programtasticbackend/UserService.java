@@ -1,5 +1,6 @@
 package com.programtastic.programtasticbackend;
 
+import com.programtastic.programtasticbackend.auth.requests.RegisterRequest;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,21 +15,21 @@ public class UserService {
     private final UserRepository userRepository;
 
     @Autowired
-    public UserService(UserRepository userRepository){
+    public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
-    public List<User> getUsers(){
+    public List<User> getUsers() {
         return userRepository.findAll();
     }
 
     // need to add more constraints for validity in creating users
-    public void addNewUser(User user) {
-        Optional<User> userOptional = userRepository
-                .findUserByEmail(user.getEmail());
-        if(userOptional.isPresent()) {
+    public void registerUser(RegisterRequest registerRequest) {
+        Optional<User> userOptionalEmail = userRepository.findUserByEmail(registerRequest.getEmail());
+        if (userOptionalEmail.isPresent()) {
             throw new IllegalStateException("email taken");
         }
+        User user = new User(registerRequest);
         userRepository.save(user);
     }
 
@@ -40,6 +41,7 @@ public class UserService {
         userRepository.deleteById(userID);
     }
 
+    // updateUser method
     @Transactional
     public void updateUser(Long userID,
                            String fName,
@@ -47,7 +49,7 @@ public class UserService {
                            String email) {
         User user = userRepository.findById(userID)
                 .orElseThrow(() -> new IllegalStateException(
-                        "student with id " + userID + " dpes not exist"
+                        "student with id " + userID + " does not exist"
                 ));
 
         if (fName != null &&

@@ -1,5 +1,6 @@
 package com.programtastic.programtasticbackend;
 
+import com.programtastic.programtasticbackend.auth.requests.RegisterRequest;
 import jakarta.persistence.*;
 import java.time.LocalDate;
 
@@ -57,6 +58,14 @@ public class User {
         this.countryLastSignIn = countryLastSignIn;
         this.dateAccountCreated = dateAccountCreated;
         this.dateLastSignIn = dateLastSignIn;
+    }
+
+    public User(RegisterRequest registerRequest) {
+        this.fName = registerRequest.getfName();
+        this.lName = registerRequest.getlName();
+        this.userName = registerRequest.getUsername();
+        this.email = registerRequest.getEmail();
+        this.passwordHash = registerRequest.getPassword();
     }
 
     public long getUserID() {

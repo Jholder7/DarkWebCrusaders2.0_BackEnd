@@ -1,7 +1,8 @@
 package com.programtastic.programtasticbackend;
 
-import jakarta.transaction.Transactional;
+import com.programtastic.programtasticbackend.auth.requests.RegisterRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,19 +18,18 @@ public class UserController {
     }
 
     @GetMapping
-    public List<User> getUsers(){
+    public List<User> getUsers() {
         return userService.getUsers();
     }
 
     @PostMapping
-    public void registerNewUser(@RequestBody User user) {
-        userService.addNewUser(user);
+    public void registerUser(@RequestBody RegisterRequest registerRequest) {
+        userService.registerUser(registerRequest);
     }
 
     // need to ensure is non-null
     @DeleteMapping(path = "{userID}")
-    public void deleteUser(
-            @PathVariable("userID") Long userID) {
+    public void deleteUser(@PathVariable("userID") Long userID) {
         userService.deleteUser(userID);
     }
 
